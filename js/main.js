@@ -48,6 +48,7 @@ var getPinsDescription = function () {
     });
    return pins;
  };
+}
 
 // создание DOM-элемента, заполнение его данными из массива getPinsDescription
  var renderPin = function (pin) {
@@ -71,4 +72,3 @@ var getPinsDescription = function () {
 };
 
 collectFragment(getPinsDescription());
-// eof
