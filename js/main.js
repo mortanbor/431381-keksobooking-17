@@ -71,3 +71,4 @@ var getPinsDescription = function () {
 };
 
 collectFragment(getPinsDescription());
+// eof
