@@ -19,7 +19,7 @@ var similarTemplateElement = document.querySelector('#pin').content.querySelecto
 
 // получаем случайный номер элемента. Элемент массива или данные - вставляем аргументом в функции
 var getRandomInteger = function (min, max) {
-  return Math.floor(min + Math.random()) * (max - min);
+  return Math.floor(min + Math.random() * (max - min));
 };
 
 // получаем непосредственно значение элемента массива по случайно полученному индексу
