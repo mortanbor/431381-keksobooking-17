@@ -10,7 +10,6 @@ var HEIGHT_PIN = 44;
 
 // у блока .map убираю класс .map--faded
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
 
 // формируем шаблон для копирования
 // первая строка - это то, куда будем копировать
@@ -51,9 +50,6 @@ var getPinsDescription = function () {
   return pins;
 };
 
-var pinElementX = WIDTH_PIN - WIDTH_PIN / 2;
-var pinElementY = HEIGHT_PIN - HEIGHT_PIN / 2;
-
 // создание DOM-элемента, заполнение его данными из массива getPinsDescription
 var renderPin = function (pin) {
   var pinElement = similarTemplateElement.cloneNode(true); // находим шаблон для копирования и копируем его полностью
@@ -61,8 +57,8 @@ var renderPin = function (pin) {
 
   imgPin.src = pin.author.avatar;
   imgPin.alt = pin.offer.type;
-  pinElement.style.left = 'pin.location.x' - pinElementX + 'px';
-  pinElement.style.top = 'pin.location.y' - pinElementY + 'px';
+  pinElement.style.left = (pin.location.x - (WIDTH_PIN / 2)) + 'px';
+  pinElement.style.top = (pin.location.y - (HEIGHT_PIN / 2)) + 'px';
 
   return pinElement;
 };
@@ -77,3 +73,5 @@ var collectFragment = function (pins) {
 };
 
 collectFragment(getPinsDescription());
+
+map.classList.remove('map--faded');
