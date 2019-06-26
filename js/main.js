@@ -7,8 +7,6 @@ var HEIGHT_MAP_START = 130;
 var HEIGHT_MAP_FINISH = 630;
 var WIDTH_PIN = 40;
 var HEIGHT_PIN = 44;
-var widthMap = 1500;
-/* map.offsetWidth; */
 
 // у блока .map убираю класс .map--faded
 var map = document.querySelector('.map');
@@ -29,6 +27,8 @@ var getRandomInteger = function (min, max) {
 var getRandomElement = function (elements) {
   return elements[getRandomInteger(0, elements.length)];
 };
+
+var widthMap = map.offsetWidth;
 
 // формируем массив из  восьми JS объектов
 var getPinsDescription = function () {
@@ -51,16 +51,20 @@ var getPinsDescription = function () {
   return pins;
 };
 
+var pinElementX = WIDTH_PIN - WIDTH_PIN / 2;
+var pinElementY = HEIGHT_PIN - HEIGHT_PIN / 2;
+
 // создание DOM-элемента, заполнение его данными из массива getPinsDescription
 var renderPin = function (pin) {
   var pinElement = similarTemplateElement.cloneNode(true); // находим шаблон для копирования и копируем его полностью
-  var imgPin = pinElement.querySelector('.img');
-  var buttonPin = pinElement.querySelector('.map__pin');
+  var imgPin = pinElement.querySelector('img');
 
-  imgPin.imgPin.src = pin.author.avatar;
-  imgPin.imgPin.alt = pin.offer.type;
-  buttonPin.buttonPin.style = pin.location.x - (WIDTH_PIN - (WIDTH_PIN / 2));
-  buttonPin.buttonPin.style = pin.location.y - (HEIGHT_PIN - (HEIGHT_PIN / 2));
+  imgPin.src = pin.author.avatar;
+  imgPin.alt = pin.offer.type;
+  pinElement.style.left = 'pin.location.x' - pinElementX + 'px';
+  pinElement.style.top = 'pin.location.y' - pinElementY + 'px';
+
+  return pinElement;
 };
 
 // отрисовка сгенерированных DOM-элементов в блок .map__pins с использованим DocumentFragment
