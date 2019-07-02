@@ -72,6 +72,30 @@ var collectFragment = function (pins) {
   similarListElement.appendChild(fragment);
 };
 
-collectFragment(getPinsDescription());
+// collectFragment(getPinsDescription());
 
-map.classList.remove('map--faded');
+// map.classList.remove('map--faded');
+
+var mapFeatures = document.querySelectorAll('.map__features');
+var mapFilters = document.querySelectorAll('.map__filter');
+var addFormHeader = document.querySelectorAll('.ad-form-header');
+var addFormElement = document.querySelectorAll('.ad-form__element');
+
+mapFeatures.setAttribute('disabled', 'disabled');
+mapFilters.setAttribute('disabled', 'disabled');
+addFormHeader.setAttribute('disabled', 'disabled');
+addFormElement.setAttribute('disabled', 'disabled');
+
+/* mapFeatures.setAttribute("disabled", "disabled");
+mapFilters.setAttribute("disabled", "disabled");
+addFormHeader.setAttribute("disabled", "disabled");
+addFormElement.setAttribute("disabled", "disabled"); */
+
+/* (input, select и т.д.) т.е. добавить через DOM-операции самим полям
+или fieldset которые их содержат, атрибут disabled. */
+
+/* // Отключение элемента
+document.getElementById('buttonRemove').setAttribute("disabled", "true");
+
+// Задействование элемента путём снятия атрибута "disabled"
+document.getElementById('buttonRemove').removeAttribute("disabled"); */
