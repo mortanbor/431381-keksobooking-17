@@ -72,8 +72,6 @@ var collectFragment = function (pins) {
   similarListElement.appendChild(fragment);
 };
 
-// collectFragment(getPinsDescription());
-
 // map.classList.remove('map--faded');
 
 var mapFeatures = document.querySelectorAll('.map__features');
@@ -81,21 +79,23 @@ var mapFilters = document.querySelectorAll('.map__filter');
 var addFormHeader = document.querySelectorAll('.ad-form-header');
 var addFormElement = document.querySelectorAll('.ad-form__element');
 
-mapFeatures.setAttribute('disabled', 'disabled');
-mapFilters.setAttribute('disabled', 'disabled');
-addFormHeader.setAttribute('disabled', 'disabled');
-addFormElement.setAttribute('disabled', 'disabled');
+var setDisabled = function (elements) {
+  var disabledElements;
+  for (var i = 0; i < elements.length; i++) {
+    disabledElements = elements[i].setAttribute('disabled', 'disabled');
+  }
+};
 
-/* mapFeatures.setAttribute("disabled", "disabled");
-mapFilters.setAttribute("disabled", "disabled");
-addFormHeader.setAttribute("disabled", "disabled");
-addFormElement.setAttribute("disabled", "disabled"); */
+setDisabled(mapFeatures);
+setDisabled(mapFilters);
+setDisabled(addFormHeader);
+setDisabled(addFormElement);
 
-/* (input, select и т.д.) т.е. добавить через DOM-операции самим полям
-или fieldset которые их содержат, атрибут disabled. */
+var mapPinMain = document.querySelector('.map__pin--main');
 
-/* // Отключение элемента
-document.getElementById('buttonRemove').setAttribute("disabled", "true");
+mapPinMain.addEventListener('click', function () {
+  collectFragment(getPinsDescription());
+});
 
-// Задействование элемента путём снятия атрибута "disabled"
+/* Задействование элемента путём снятия атрибута "disabled"
 document.getElementById('buttonRemove').removeAttribute("disabled"); */
