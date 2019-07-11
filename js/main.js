@@ -72,30 +72,51 @@ var collectFragment = function (pins) {
   similarListElement.appendChild(fragment);
 };
 
-// map.classList.remove('map--faded');
-
-var mapFeatures = document.querySelectorAll('.map__features');
+/* var mapFeatures = document.querySelectorAll('.map__features'); */
 var mapFilters = document.querySelectorAll('.map__filter');
-var addFormHeader = document.querySelectorAll('.ad-form-header');
-var addFormElement = document.querySelectorAll('.ad-form__element');
+var adForm = document.querySelector('.ad-form');
+/* var addFormHeader = document.querySelectorAll('.ad-form-header');
+var addFormElement = document.querySelectorAll('.ad-form__element'); */
 
 var setDisabled = function (elements) {
-  var disabledElements;
   for (var i = 0; i < elements.length; i++) {
-    disabledElements = elements[i].setAttribute('disabled', 'disabled');
+    elements[i].setAttribute('disabled', 'disabled');
   }
 };
 
-setDisabled(mapFeatures);
+/* setDisabled(mapFeatures); */
 setDisabled(mapFilters);
-setDisabled(addFormHeader);
-setDisabled(addFormElement);
+setDisabled(adForm);
+/* setDisabled(addFormHeader);
+setDisabled(addFormElement); */
+
+var removeDisabled = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].removeAttribute('disabled');
+  }
+};
 
 var mapPinMain = document.querySelector('.map__pin--main');
 
-mapPinMain.addEventListener('click', function () {
+var clickMapPinMain = function () {
   collectFragment(getPinsDescription());
-});
+  adForm.classList.remove('ad-form--disabled');
+  map.classList.remove('map--faded');
+
+  removeDisabled(mapFilters);
+  removeDisabled(adForm);
+};
+
+mapPinMain.addEventListener('click', clickMapPinMain);
+
+// button.removeEventListener('click', buttonClickHandler);
+/* var buttonClickHandler = function() {
+ alert('Hello from first handler');
+}; */
 
 /* Задействование элемента путём снятия атрибута "disabled"
-document.getElementById('buttonRemove').removeAttribute("disabled"); */
+document.getElementById('buttonRemove').removeAttribute("disabled");
+Обработчик события click должен вызывать функцию, которая будет отменять изменения DOM-элементов
+нужна функция по аналогии с setDisabled которая будет вызывать
+https://developer.mozilla.org/ru/docs/Web/API/Element/removeAttribute на элементах
+*/
