@@ -7,8 +7,12 @@ var HEIGHT_MAP_START = 130;
 var HEIGHT_MAP_FINISH = 630;
 var WIDTH_PIN = 40;
 var HEIGHT_PIN = 44;
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 87;
 
-// у блока .map убираю класс .map--faded
+var widthPinHalf = WIDTH_PIN / 2;
+var heightPinHalf = HEIGHT_PIN / 2;
+
 var map = document.querySelector('.map');
 
 // формируем шаблон для копирования
@@ -33,7 +37,7 @@ var widthMap = map.offsetWidth;
 var getPinsDescription = function () {
   var pins = [];
 
-  for (var i = 0; i < NUMBERS_OF_PINS; i++) {
+  for (var i = 1; i <= NUMBERS_OF_PINS; i++) {
     pins.push({
       author: {
         avatar: 'img/avatars/user0' + i + '.png'
@@ -42,7 +46,7 @@ var getPinsDescription = function () {
         type: getRandomElement(TYPES)
       },
       location: {
-        x: getRandomInteger(0, widthMap),
+        x: getRandomInteger(widthPinHalf, widthMap - widthPinHalf),
         y: getRandomInteger(HEIGHT_MAP_START, HEIGHT_MAP_FINISH)
       }
     });
@@ -57,8 +61,8 @@ var renderPin = function (pin) {
 
   imgPin.src = pin.author.avatar;
   imgPin.alt = pin.offer.type;
-  pinElement.style.left = (pin.location.x - (WIDTH_PIN / 2)) + 'px';
-  pinElement.style.top = (pin.location.y - (HEIGHT_PIN / 2)) + 'px';
+  pinElement.style.left = (pin.location.x - widthPinHalf) + 'px';
+  pinElement.style.top = (pin.location.y - heightPinHalf) + 'px';
 
   return pinElement;
 };
@@ -72,21 +76,20 @@ var collectFragment = function (pins) {
   similarListElement.appendChild(fragment);
 };
 
-/* var mapFeatures = document.querySelectorAll('.map__features'); */
-var mapFilters = document.querySelectorAll('.map__filter');
+var mapFilters = map.querySelectorAll('.map__filter');
+var mapPinMain = map.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
-/* var addFormHeader = document.querySelectorAll('.ad-form-header');
-var addFormElement = document.querySelectorAll('.ad-form__element'); */
+var fieldAddress = adForm.querySelector('#address');
 
-var setDisabled = function (elements) {
+var setElementsDisabled = function (elements) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].setAttribute('disabled', 'disabled');
   }
 };
 
 /* setDisabled(mapFeatures); */
-setDisabled(mapFilters);
-setDisabled(adForm);
+setElementsDisabled(mapFilters);
+setElementsDisabled(adForm);
 /* setDisabled(addFormHeader);
 setDisabled(addFormElement); */
 
@@ -96,7 +99,19 @@ var removeDisabled = function (elements) {
   }
 };
 
-var mapPinMain = document.querySelector('.map__pin--main');
+// получаю координаты нижнего конца метки
+var getPinCoords = function (node, width, height) {
+  var top = node.offsetTop;
+  var left = node.offsetLeft;
+  var x = Math.round(left + width / 2);
+  var y = Math.round(top + height);
+
+  return [x, y];
+};
+
+var mainPinCoords = getPinCoords(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT);
+
+fieldAddress.setAttribute('value', mainPinCoords.join(', '));
 
 var clickMapPinMain = function () {
   collectFragment(getPinsDescription());
@@ -105,18 +120,7 @@ var clickMapPinMain = function () {
 
   removeDisabled(mapFilters);
   removeDisabled(adForm);
+  mapPinMain.removeEventListener('click', clickMapPinMain);
 };
 
 mapPinMain.addEventListener('click', clickMapPinMain);
-
-// button.removeEventListener('click', buttonClickHandler);
-/* var buttonClickHandler = function() {
- alert('Hello from first handler');
-}; */
-
-/* Задействование элемента путём снятия атрибута "disabled"
-document.getElementById('buttonRemove').removeAttribute("disabled");
-Обработчик события click должен вызывать функцию, которая будет отменять изменения DOM-элементов
-нужна функция по аналогии с setDisabled которая будет вызывать
-https://developer.mozilla.org/ru/docs/Web/API/Element/removeAttribute на элементах
-*/
