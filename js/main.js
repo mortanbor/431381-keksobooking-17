@@ -2,6 +2,9 @@
 
 // статичные исходные данные
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var TYPES_PRICES = ['10000', '1000', '5000', '0'];
+var TIMEIN = ['12:00', '13:00', '14:00'];
+var TIMEOUT = ['12:00', '13:00', '14:00'];
 var NUMBERS_OF_PINS = 8;
 var HEIGHT_MAP_START = 130;
 var HEIGHT_MAP_FINISH = 630;
@@ -111,7 +114,9 @@ var getPinCoords = function (node, width, height) {
 
 var mainPinCoords = getPinCoords(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT);
 
-fieldAddress.setAttribute('value', mainPinCoords.join(', '));
+// добавляем значение в инпут адрес координат острого конца главной метки
+// Метод join() объединяет все элементы массива в строку
+fieldAddress.value = mainPinCoords.join(', ');
 
 var clickMapPinMain = function () {
   collectFragment(getPinsDescription());
@@ -124,3 +129,50 @@ var clickMapPinMain = function () {
 };
 
 mapPinMain.addEventListener('click', clickMapPinMain);
+
+var fieldRent = adForm.querySelector('#type');
+var fieldMinPrice = adForm.querySelector('#price');
+var fieldTimein = adForm.querySelector('#timein');
+var fieldTimeout = adForm.querySelector('#timeout');
+
+// находим цену соответствующего жилья
+var getRentPrice = function (rent) {
+  var indexOfRent = TYPES.findIndex(function (item) {
+    return item === rent;
+  });
+  return TYPES_PRICES[indexOfRent];
+};
+
+// в поле цены записать мин.цену стартого жилья
+fieldMinPrice.placeholder = getRentPrice(fieldRent.value);
+
+// функция применения минимальной цены к полю
+var changeMinPrice = function (minPrice) {
+  fieldMinPrice.placeholder = minPrice;
+  fieldMinPrice.min = minPrice;
+};
+
+fieldRent.addEventListener('change', function () {
+  // применяем к полю  минимальной цены - мин.цену,
+  // соответствую типу жилья в поле которое слушаем
+  changeMinPrice(getRentPrice(fieldRent.value));
+});
+
+// находим время соответствующего выезда
+var getTimeOut = function (time) {
+  var indexOfTime = TIMEIN.findIndex(function (item) {
+    return item === time;
+  });
+  return TIMEOUT[indexOfTime];
+};
+
+// функция применения время выезда к полю
+var changeTimeOut = function (timeOfOut) {
+  fieldTimeout.value = timeOfOut;
+};
+
+fieldTimein.addEventListener('change', function () {
+  // применяем к полю время выезда время выезда,
+  // кот. соответствует времени заезда
+  changeTimeOut(getTimeOut(fieldTimein.value));
+});
