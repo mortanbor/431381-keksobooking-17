@@ -3,8 +3,6 @@
 // статичные исходные данные
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TYPES_PRICES = ['10000', '1000', '5000', '0'];
-var TIMEIN = ['12:00', '13:00', '14:00'];
-var TIMEOUT = ['12:00', '13:00', '14:00'];
 var NUMBERS_OF_PINS = 8;
 var HEIGHT_MAP_START = 130;
 var HEIGHT_MAP_FINISH = 630;
@@ -12,11 +10,20 @@ var WIDTH_PIN = 40;
 var HEIGHT_PIN = 44;
 var MAIN_PIN_WIDTH = 65;
 var MAIN_PIN_HEIGHT = 87;
+var ROOMS_TO_GUESTS = {
+  '1': [1],
+  '2': [1, 2],
+  '3': [1, 2, 3],
+  '100': [0]
+};
 
 var widthPinHalf = WIDTH_PIN / 2;
 var heightPinHalf = HEIGHT_PIN / 2;
 
 var map = document.querySelector('.map');
+
+// активирована ли карта
+var isActive = false;
 
 // формируем шаблон для копирования
 // первая строка - это то, куда будем копировать
@@ -118,22 +125,72 @@ var mainPinCoords = getPinCoords(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT);
 // Метод join() объединяет все элементы массива в строку
 fieldAddress.value = mainPinCoords.join(', ');
 
-var clickMapPinMain = function () {
-  collectFragment(getPinsDescription());
-  adForm.classList.remove('ad-form--disabled');
-  map.classList.remove('map--faded');
+var mapPinMainHandler = function (evt) {
+  evt.preventDefault();
+  var pin = evt.currentTarget;
 
-  removeDisabled(mapFilters);
-  removeDisabled(adForm);
-  mapPinMain.removeEventListener('click', clickMapPinMain);
+  if (!isActive) {
+    collectFragment(getPinsDescription());
+    adForm.classList.remove('ad-form--disabled');
+    map.classList.remove('map--faded');
+
+    removeDisabled(mapFilters);
+    removeDisabled(adForm);
+
+    isActive = true;
+  }
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  console.log(pin.offsetTop, pin.offsetLeft);
+
+  var moveHadler = function (moveEvt) {
+    moveEvt.preventDefault();
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    pin.style.top = (pin.offsetTop - shift.y) + 'px';
+    pin.style.left = (pin.offsetLeft - shift.x) + 'px';
+  };
+
+  var outHadler = function (outEvt) {
+    outEvt.preventDefault();
+    document.removeEventListener('mousemove', moveHadler);
+    document.removeEventListener('mouseout', outHadler);
+  };
+
+  document.addEventListener('mousemove', moveHadler);
+  document.addEventListener('mouseout', outHadler);
 };
 
-mapPinMain.addEventListener('click', clickMapPinMain);
+mapPinMain.addEventListener('mousedown', mapPinMainHandler);
 
 var fieldRent = adForm.querySelector('#type');
 var fieldMinPrice = adForm.querySelector('#price');
 var fieldTimein = adForm.querySelector('#timein');
 var fieldTimeout = adForm.querySelector('#timeout');
+var fieldRoomNumber = adForm.querySelector('#room_number');
+var fieldCapacity = adForm.querySelector('#capacity');
+
+// синхронизируем время заезда с выездом
+var setSynchronizeValue = function (donor, acceptor) {
+  donor.addEventListener('change', function () {
+    acceptor.value = donor.value;
+  });
+};
+
+setSynchronizeValue(fieldTimein, fieldTimeout);
+setSynchronizeValue(fieldTimeout, fieldTimein);
 
 // находим цену соответствующего жилья
 var getRentPrice = function (rent) {
@@ -158,21 +215,31 @@ fieldRent.addEventListener('change', function () {
   changeMinPrice(getRentPrice(fieldRent.value));
 });
 
-// находим время соответствующего выезда
-var getTimeOut = function (time) {
-  var indexOfTime = TIMEIN.findIndex(function (item) {
-    return item === time;
-  });
-  return TIMEOUT[indexOfTime];
+// var ROOMS_TO_GUESTS = {
+//   '1': [1],
+//   '2': [1, 2],
+//   '3': [1, 2, 3],
+//   '100': [0]
+// };
+// var fieldRoomNumber = adForm.querySelector('#room_number');
+// var fieldCapacity = adForm.querySelector('#capacity');
+var rooms = Object.keys(ROOMS_TO_GUESTS);
+var capacityOptions = fieldCapacity.querySelectorAll('option');
+
+var roomsChangeHandler = function () {
+  var currentValue = fieldRoomNumber.value;
+  var currentRooms = ROOMS_TO_GUESTS[rooms.find(function (item) {
+    return item === currentValue;
+  })];
+  for (var i = 0; i < capacityOptions.length; i++) {
+    var currentCapacity = capacityOptions[i];
+    if (currentRooms.indexOf(+currentCapacity.value) > -1) {
+      currentCapacity.removeAttribute('disabled');
+    } else {
+      currentCapacity.setAttribute('disabled', 'disabled');
+    }
+  }
 };
 
-// функция применения время выезда к полю
-var changeTimeOut = function (timeOfOut) {
-  fieldTimeout.value = timeOfOut;
-};
-
-fieldTimein.addEventListener('change', function () {
-  // применяем к полю время выезда время выезда,
-  // кот. соответствует времени заезда
-  changeTimeOut(getTimeOut(fieldTimein.value));
-});
+fieldRoomNumber.addEventListener('change', roomsChangeHandler);
+roomsChangeHandler();
