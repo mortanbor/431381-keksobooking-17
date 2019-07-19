@@ -145,8 +145,6 @@ var mapPinMainHandler = function (evt) {
     y: evt.clientY
   };
 
-  console.log(pin.offsetTop, pin.offsetLeft);
-
   var moveHadler = function (moveEvt) {
     moveEvt.preventDefault();
     var shift = {
