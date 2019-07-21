@@ -4,12 +4,12 @@
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TYPES_PRICES = ['10000', '1000', '5000', '0'];
 var NUMBERS_OF_PINS = 8;
-var HEIGHT_MAP_START = 130;
-var HEIGHT_MAP_FINISH = 630;
-var WIDTH_PIN = 40;
-var HEIGHT_PIN = 44;
+var MIN_MAP_Y = 130;
+var MAX_MAP_Y = 630;
+var PIN_WIDTH = 40;
+var PIN_HEIGHT = 44;
 var MAIN_PIN_WIDTH = 65;
-var MAIN_PIN_HEIGHT = 87;
+var MAIN_PIN_HEIGHT = 65;
 var ROOMS_TO_GUESTS = {
   '1': [1],
   '2': [1, 2],
@@ -17,10 +17,17 @@ var ROOMS_TO_GUESTS = {
   '100': [0]
 };
 
-var widthPinHalf = WIDTH_PIN / 2;
-var heightPinHalf = HEIGHT_PIN / 2;
-
 var map = document.querySelector('.map');
+var widthMap = map.offsetWidth;
+
+var widthPinHalf = PIN_WIDTH / 2;
+var heightPinHalf = PIN_HEIGHT / 2;
+var minMainPinY = MIN_MAP_Y - MAIN_PIN_HEIGHT;
+var maxMainPinY = MAX_MAP_Y - MAIN_PIN_HEIGHT;
+var offsetMainPinHalf = MAIN_PIN_WIDTH / -2;
+var minMainPinX = offsetMainPinHalf;
+var maxMainPinX = widthMap + offsetMainPinHalf;
+
 
 // активирована ли карта
 var isActive = false;
@@ -41,8 +48,6 @@ var getRandomElement = function (elements) {
   return elements[getRandomInteger(0, elements.length)];
 };
 
-var widthMap = map.offsetWidth;
-
 // формируем массив из  восьми JS объектов
 var getPinsDescription = function () {
   var pins = [];
@@ -57,7 +62,7 @@ var getPinsDescription = function () {
       },
       location: {
         x: getRandomInteger(widthPinHalf, widthMap - widthPinHalf),
-        y: getRandomInteger(HEIGHT_MAP_START, HEIGHT_MAP_FINISH)
+        y: getRandomInteger(MIN_MAP_Y, MAX_MAP_Y)
       }
     });
   }
@@ -119,33 +124,39 @@ var getPinCoords = function (node, width, height) {
   return [x, y];
 };
 
-var mainPinCoords = getPinCoords(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT);
+var setPinCoordsToAddress = function () {
+  var mainPinCoords = getPinCoords(mapPinMain, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT);
 
-// добавляем значение в инпут адрес координат острого конца главной метки
-// Метод join() объединяет все элементы массива в строку
-fieldAddress.value = mainPinCoords.join(', ');
+  // добавляем значение в инпут адрес координат острого конца главной метки
+  // Метод join() объединяет все элементы массива в строку
+  fieldAddress.value = mainPinCoords.join(', ');
+};
+
+// запись в поле адреса первичных координат метки
+setPinCoordsToAddress();
+
+// активируем карту
+var activateMap = function () {
+  collectFragment(getPinsDescription());
+  adForm.classList.remove('ad-form--disabled');
+  map.classList.remove('map--faded');
+
+  removeDisabled(mapFilters);
+  removeDisabled(adForm);
+
+  isActive = true;
+};
 
 var mapPinMainHandler = function (evt) {
   evt.preventDefault();
   var pin = evt.currentTarget;
 
-  if (!isActive) {
-    collectFragment(getPinsDescription());
-    adForm.classList.remove('ad-form--disabled');
-    map.classList.remove('map--faded');
-
-    removeDisabled(mapFilters);
-    removeDisabled(adForm);
-
-    isActive = true;
-  }
-
   var startCoords = {
-    x: evt.clientX,
+    x: evt.clientX, // координата текущего курсора на котором работает тек.событие
     y: evt.clientY
   };
 
-  var moveHadler = function (moveEvt) {
+  var moveHandler = function (moveEvt) {
     moveEvt.preventDefault();
     var shift = {
       x: startCoords.x - moveEvt.clientX,
@@ -157,18 +168,27 @@ var mapPinMainHandler = function (evt) {
       y: moveEvt.clientY
     };
 
-    pin.style.top = (pin.offsetTop - shift.y) + 'px';
-    pin.style.left = (pin.offsetLeft - shift.x) + 'px';
+    var pinTop = pin.offsetTop - shift.y;
+    var pinLeft = pin.offsetLeft - shift.x;
+    var minTop = Math.max(minMainPinY, pinTop);
+    var minLeft = Math.max(minMainPinX, pinLeft);
+
+    pin.style.top = Math.min(minTop, maxMainPinY) + 'px';
+    pin.style.left = Math.min(minLeft, maxMainPinX) + 'px';
   };
 
-  var outHadler = function (outEvt) {
-    outEvt.preventDefault();
-    document.removeEventListener('mousemove', moveHadler);
-    document.removeEventListener('mouseout', outHadler);
+  var upHandler = function (upEvt) {
+    upEvt.preventDefault();
+    if (!isActive) {
+      activateMap();
+    }
+    setPinCoordsToAddress();
+    document.removeEventListener('mousemove', moveHandler);
+    document.removeEventListener('mouseup', upHandler);
   };
 
-  document.addEventListener('mousemove', moveHadler);
-  document.addEventListener('mouseout', outHadler);
+  document.addEventListener('mousemove', moveHandler);
+  document.addEventListener('mouseup', upHandler);
 };
 
 mapPinMain.addEventListener('mousedown', mapPinMainHandler);
@@ -241,3 +261,7 @@ var roomsChangeHandler = function () {
 
 fieldRoomNumber.addEventListener('change', roomsChangeHandler);
 roomsChangeHandler();
+
+// (function () {
+//
+// })();
