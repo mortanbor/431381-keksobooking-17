@@ -59,8 +59,8 @@
 
   window.pins = {
     mapFilters: mapFilters,
-    collectFragment: function () {
-      collectFragment(getPinsDescription());
+    collectFragment: function (pins) {
+      collectFragment(pins);
     }
   };
 })();
