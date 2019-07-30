@@ -18,6 +18,7 @@
       '3': [1, 2, 3],
       '100': [0]
     },
+    ENDPOINT: 'https://js.dump.academy/keksobooking/data',
     isActive: false // активирована ли страница
   };
 })();

@@ -18,9 +18,14 @@
     return [x, y];
   };
 
+  // callback успешной загрузки данных
+  var loadSuccessHandler = function (res) {
+    window.pins.collectFragment(res.slice(0, window.data.NUMBERS_OF_PINS));
+  };
+
   // активация всей страницы
   var activateMap = function () {
-    window.pins.collectFragment();
+    window.ajax(window.data.ENDPOINT, loadSuccessHandler);
     window.form.node.classList.remove('ad-form--disabled');
     window.map.node.classList.remove('map--faded');
 
