@@ -20,7 +20,8 @@
 
   // callback успешной загрузки данных
   var loadSuccessHandler = function (res) {
-    window.pins.collectFragment(res.slice(0, window.data.NUMBERS_OF_PINS));
+    window.pins.data = res;
+    window.pins.collectFragment(res);
   };
 
   // активация всей страницы
@@ -29,7 +30,7 @@
     window.form.node.classList.remove('ad-form--disabled');
     window.map.node.classList.remove('map--faded');
 
-    window.utils.removeElementsDisabled(window.pins.mapFilters);
+    window.utils.removeElementsDisabled(window.map.filtersNodes);
     window.utils.removeElementsDisabled(window.form.node);
 
     window.data.isActive = true;

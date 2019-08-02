@@ -5,7 +5,7 @@
   window.data = {
     TYPES: ['palace', 'flat', 'house', 'bungalo'],
     TYPES_PRICES: ['10000', '1000', '5000', '0'],
-    NUMBERS_OF_PINS: 8,
+    NUMBERS_OF_PINS: 5,
     MIN_MAP_Y: 130,
     MAX_MAP_Y: 630,
     PIN_WIDTH: 40,
