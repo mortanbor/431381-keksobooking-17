@@ -29,11 +29,18 @@
     });
   };
 
+  var findTypeById = function (id) {
+    window.data.TYPES.find(function (item) {
+      return item.id === id;
+    });
+  };
+
   window.utils = {
     getRandomInteger: getRandomInteger,
     getRandomElement: getRandomElement,
     setElementsDisabled: setElementsDisabled,
     removeElementsDisabled: removeElementsDisabled,
+    findTypeById: findTypeById,
     setSynchronizeValue: setSynchronizeValue
   };
 })();

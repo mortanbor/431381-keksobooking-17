@@ -3,8 +3,28 @@
 (function () {
   // статичные исходные данные
   window.data = {
-    TYPES: ['palace', 'flat', 'house', 'bungalo'],
-    TYPES_PRICES: ['10000', '1000', '5000', '0'],
+    TYPES: [
+      {
+        id: 'palace',
+        name: 'Дворец',
+        price: 10000
+      },
+      {
+        id: 'flat',
+        name: 'Квартира',
+        price: 1000
+      },
+      {
+        id: 'house',
+        name: 'Дом',
+        price: 5000
+      },
+      {
+        id: 'bungalo',
+        name: 'Бунгало',
+        price: 0
+      }
+    ],
     NUMBERS_OF_PINS: 5,
     MIN_MAP_Y: 130,
     MAX_MAP_Y: 630,
@@ -18,6 +38,7 @@
       '3': [1, 2, 3],
       '100': [0]
     },
+    CURRENCY_PER_NIGHT: '₽/ночь',
     ENDPOINT: 'https://js.dump.academy/keksobooking/data',
     isActive: false // активирована ли страница
   };

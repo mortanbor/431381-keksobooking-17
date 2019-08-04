@@ -8,33 +8,11 @@
   // первая строка - это то, куда будем копировать
   // вторая строка - откуда берём шаблон для копирования
   var pinsContainer = window.map.node.querySelector('.map__pins');
-  var similarTemplateElement = document.querySelector('#pin').content.querySelector('.map__pin');
-
-  // // формируем массив из  восьми JS объектов
-  // удаляем перед защитой, использовала для формирования массива из моковых данных
-  // var getPinsDescription = function () {
-  //   var pins = [];
-  //
-  //   for (var i = 1; i <= window.data.NUMBERS_OF_PINS; i++) {
-  //     pins.push({
-  //       author: {
-  //         avatar: 'img/avatars/user0' + i + '.png'
-  //       },
-  //       offer: {
-  //         type: window.utils.getRandomElement(window.data.TYPES)
-  //       },
-  //       location: {
-  //         x: window.utils.getRandomInteger(widthPinHalf, window.map.width - widthPinHalf),
-  //         y: window.utils.getRandomInteger(window.data.MIN_MAP_Y, window.data.MAX_MAP_Y)
-  //       }
-  //     });
-  //   }
-  //   return pins;
-  // };
+  var pinTemplateElement = document.querySelector('#pin').content.querySelector('.map__pin');
 
   // создание DOM-элемента, заполнение его данными из массива объявлений
   var renderPin = function (pin) {
-    var pinElement = similarTemplateElement.cloneNode(true); // находим шаблон для копирования и копируем его полностью
+    var pinElement = pinTemplateElement.cloneNode(true); // находим шаблон для копирования и копируем его полностью
     var imgPin = pinElement.querySelector('img');
 
     imgPin.src = pin.author.avatar;

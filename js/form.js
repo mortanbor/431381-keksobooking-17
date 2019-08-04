@@ -13,10 +13,8 @@
 
   // находим цену соответствующего жилья
   var getRentPrice = function (rent) {
-    var indexOfRent = window.data.TYPES.findIndex(function (item) {
-      return item === rent;
-    });
-    return window.data.TYPES_PRICES[indexOfRent];
+    var currentType = window.utils.findTypeById(rent);
+    return currentType.price;
   };
 
   // функция применения минимальной цены к полю
@@ -24,6 +22,7 @@
     fieldMinPrice.placeholder = minPrice;
     fieldMinPrice.min = minPrice;
   };
+
 
   // Object.keys выбирает список вариантов комнат (ключи) из библиотеки
   var rooms = Object.keys(window.data.ROOMS_TO_GUESTS);
