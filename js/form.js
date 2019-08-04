@@ -23,7 +23,6 @@
     fieldMinPrice.min = minPrice;
   };
 
-
   // Object.keys выбирает список вариантов комнат (ключи) из библиотеки
   var rooms = Object.keys(window.data.ROOMS_TO_GUESTS);
   var roomsChangeHandler = function () {

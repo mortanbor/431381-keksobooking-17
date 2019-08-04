@@ -39,6 +39,8 @@
       '100': [0]
     },
     CURRENCY_PER_NIGHT: '₽/ночь',
+    TEMPLATE_CAPACITY: '{{rooms}} комнаты для {{guests}} гостей',
+    TEMPLATE_CHECK: 'Заезд после {{checkin}}, выезд до {{checkout}}',
     ENDPOINT: 'https://js.dump.academy/keksobooking/data',
     isActive: false // активирована ли страница
   };

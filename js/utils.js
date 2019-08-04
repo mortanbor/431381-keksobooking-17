@@ -30,8 +30,19 @@
   };
 
   var findTypeById = function (id) {
-    window.data.TYPES.find(function (item) {
+    return window.data.TYPES.find(function (item) {
       return item.id === id;
+    });
+  };
+
+  // заменяет в строке вхождение вида {{something}} на
+  // элемент массива data. Число элемнтов должно быть равно
+  // числу элементов вхождений в строку
+  var templateRender = function (str, data) {
+    var i = -1;
+    return str.replace(/{{.*?}}/g, function (match, pattern) {
+      i++;
+      return data[i] || match;
     });
   };
 
@@ -41,6 +52,7 @@
     setElementsDisabled: setElementsDisabled,
     removeElementsDisabled: removeElementsDisabled,
     findTypeById: findTypeById,
+    templateRender: templateRender,
     setSynchronizeValue: setSynchronizeValue
   };
 })();
