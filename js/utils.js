@@ -40,7 +40,7 @@
   // числу элементов вхождений в строку
   var templateRender = function (str, data) {
     var i = -1;
-    return str.replace(/{{.*?}}/g, function (match, pattern) {
+    return str.replace(/{{.*?}}/g, function (match) {
       i++;
       return data[i] || match;
     });

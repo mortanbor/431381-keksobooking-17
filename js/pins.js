@@ -35,6 +35,13 @@
   };
 
   var similarListElement = document.createElement('div');
+
+  similarListElement.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('map__pin')) {
+
+    }
+  });
+
   pinsContainer.appendChild(similarListElement);
 
   window.utils.setElementsDisabled(window.map.filtersNodes);
