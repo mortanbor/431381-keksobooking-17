@@ -15,7 +15,7 @@
     xhr.send();
   };
 
-  var errorHandler = function (status, errorCallback) {
+  var errorHandler = function (status) {
     errorStatusBlock.innerHTML = status;
     errorBlock.classList.remove('hidden');
   };

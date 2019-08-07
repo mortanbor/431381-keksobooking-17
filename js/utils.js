@@ -29,11 +29,30 @@
     });
   };
 
+  var findTypeById = function (id) {
+    return window.data.TYPES.find(function (item) {
+      return item.id === id;
+    });
+  };
+
+  // заменяет в строке вхождение вида {{something}} на
+  // элемент массива data. Число элемнтов должно быть равно
+  // числу элементов вхождений в строку
+  var templateRender = function (str, data) {
+    var i = -1;
+    return str.replace(/{{.*?}}/g, function (match) {
+      i++;
+      return data[i] || match;
+    });
+  };
+
   window.utils = {
     getRandomInteger: getRandomInteger,
     getRandomElement: getRandomElement,
     setElementsDisabled: setElementsDisabled,
     removeElementsDisabled: removeElementsDisabled,
+    findTypeById: findTypeById,
+    templateRender: templateRender,
     setSynchronizeValue: setSynchronizeValue
   };
 })();
