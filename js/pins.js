@@ -38,7 +38,9 @@
 
   similarListElement.addEventListener('click', function (evt) {
     if (evt.target.classList.contains('map__pin')) {
-
+      var pins = similarListElement.querySelectorAll('.map__pin');
+      var pinIndex = window.utils.getNodeNumber(pins, evt.target);
+      window.cards.renderCard(window.pins.data[pinIndex]);
     }
   });
 
@@ -47,7 +49,7 @@
   window.utils.setElementsDisabled(window.map.filtersNodes);
 
   window.pins = {
-    data: [], // объявляем массив данных, куда записывать данные с сервера
+    data: data, // объявляем массив данных, куда записывать данные с сервера
     collectFragment: function (pins) {
       collectFragment(pins);
     }

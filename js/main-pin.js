@@ -22,7 +22,7 @@
   var loadSuccessHandler = function (res) {
     window.pins.data = res;
     window.pins.collectFragment(res);
-    window.cards.renderCard(res[0]);
+    // window.cards.renderCard(res[0]);
   };
 
   // активация всей страницы

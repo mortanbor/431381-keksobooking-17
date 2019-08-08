@@ -46,6 +46,13 @@
     });
   };
 
+  // находим номер DOM-узла в коллекции
+  var getNodeNumber = function (nodeList, node) {
+    return Array.from(nodeList).findIndex(function (item) {
+        return item === node;
+    });
+  };
+
   window.utils = {
     getRandomInteger: getRandomInteger,
     getRandomElement: getRandomElement,
@@ -53,6 +60,7 @@
     removeElementsDisabled: removeElementsDisabled,
     findTypeById: findTypeById,
     templateRender: templateRender,
-    setSynchronizeValue: setSynchronizeValue
+    setSynchronizeValue: setSynchronizeValue,
+    getNodeNumber: getNodeNumber
   };
 })();

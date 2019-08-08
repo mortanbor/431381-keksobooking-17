@@ -14,6 +14,7 @@
   var popupDescription = cardTemplateElement.querySelector('.popup__description');
   var popupPhotos = cardTemplateElement.querySelector('.popup__photos');
   var popupPhotoTemplate = popupPhotos.querySelector('.popup__photo').cloneNode(true);
+  var popupClose = cardTemplateElement.querySelector('.popup__close');
 
   var renderCard = function (data) {
     var offer = data.offer;
@@ -39,7 +40,18 @@
       img.src = item;
       popupPhotos.appendChild(img);
     });
+    cardTemplateElement.classList.remove('hidden');
   };
+
+  popupClose.addEventListener('click', function () {
+    cardTemplateElement.classList.add('hidden');
+  });
+
+  window.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.data.CLOSE_KEY_CODE) {
+      cardTemplateElement.classList.add('hidden');
+    }
+  });
 
   cardTemplateElement.classList.add('hidden');
   window.map.filtersContainer.insertAdjacentElement('beforebegin', cardTemplateElement);

@@ -42,6 +42,7 @@
     TEMPLATE_CAPACITY: '{{rooms}} комнаты для {{guests}} гостей',
     TEMPLATE_CHECK: 'Заезд после {{checkin}}, выезд до {{checkout}}',
     ENDPOINT: 'https://js.dump.academy/keksobooking/data',
+    CLOSE_KEY_CODE: 27,
     isActive: false // активирована ли страница
   };
 })();
