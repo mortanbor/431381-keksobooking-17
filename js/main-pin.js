@@ -40,9 +40,14 @@
   var setPinCoordsToAddress = function () {
     var mainPinCoords = getPinCoords(mainPin, window.data.MAIN_PIN_WIDTH, window.data.MAIN_PIN_HEIGHT);
 
-    // добавляем значение в инпут адрес координат острого конца главной метки
     // Метод join() объединяет все элементы массива в строку
-    window.form.fieldAddress.value = mainPinCoords.join(', ');
+    var address = mainPinCoords.join(', ');
+
+    if (!window.data.startAddress) {
+      window.data.startAddress = address;
+    }
+    // добавляем значение в инпут адрес координат острого конца главной метки
+    window.form.fieldAddress.value = address;
   };
 
   var mapPinMainHandler = function (evt) {

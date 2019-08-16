@@ -43,6 +43,14 @@
     TEMPLATE_CHECK: 'Заезд после {{checkin}}, выезд до {{checkout}}',
     ENDPOINT: 'https://js.dump.academy/keksobooking/data',
     CLOSE_KEY_CODE: 27,
-    isActive: false // активирована ли страница
+    VALIDITIES: {
+      required: 'Данное поле обязательно для заполнения',
+      minTitle: 'Минимальная длина — 30 символов. Введено {{n}} символов.',
+      maxTitle: 'Максимальная длина — 100 символов. Введено {{n}} символов.',
+      capacityPrefix: 'Допустимое количество гостей: ',
+      minPricePrefix: 'Допустимое значение: '
+    },
+    isActive: false, // активирована ли страница
+    startAddress: ''
   };
 })();

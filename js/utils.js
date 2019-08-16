@@ -36,7 +36,7 @@
   };
 
   // заменяет в строке вхождение вида {{something}} на
-  // элемент массива data. Число элемнтов должно быть равно
+  // элемент массива data. Число элементов должно быть равно
   // числу элементов вхождений в строку
   var templateRender = function (str, data) {
     var i = -1;
@@ -49,7 +49,7 @@
   // находим номер DOM-узла в коллекции
   var getNodeNumber = function (nodeList, node) {
     return Array.from(nodeList).findIndex(function (item) {
-        return item === node;
+      return item === node;
     });
   };
 

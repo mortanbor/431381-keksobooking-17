@@ -29,7 +29,13 @@
     var fragment = document.createDocumentFragment();
     var limit = Math.min(pins.length, window.data.NUMBERS_OF_PINS);
     for (var i = 0; i < limit; i++) {
-      fragment.appendChild(renderPin(pins[i]));
+      if (pins[i].offer) {
+        // Рисуем метку, только если есть данные для карточки
+        fragment.appendChild(renderPin(pins[i]));
+      } else if (limit < pins.length) {
+        // Если метка плохая, берем из большего числа, чем изначально
+        limit++;
+      }
     }
     similarListElement.appendChild(fragment);
   };
@@ -49,7 +55,7 @@
   window.utils.setElementsDisabled(window.map.filtersNodes);
 
   window.pins = {
-    data: data, // объявляем массив данных, куда записывать данные с сервера
+    data: [], // объявляем массив данных, куда записывать данные с сервера
     collectFragment: function (pins) {
       collectFragment(pins);
     }

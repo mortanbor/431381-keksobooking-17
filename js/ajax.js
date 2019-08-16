@@ -9,10 +9,11 @@
   var successHandler = null;
   var method = 'GET';
   var xhr = new XMLHttpRequest();
+  var payload = null;
 
   var ajaxHandler = function () {
     xhr.open(method, url);
-    xhr.send();
+    xhr.send(payload);
   };
 
   var errorHandler = function (status) {
@@ -47,11 +48,12 @@
   errorBlock.classList.add('hidden');
   document.body.appendChild(errorBlock);
 
-  window.ajax = function (foreignUrl, foreignSuccessHandler, foreignMethod) {
+  window.ajax = function (foreignUrl, foreignSuccessHandler, foreignMethod, foreignPayload) {
     url = foreignUrl;
     successHandler = foreignSuccessHandler;
     if (foreignMethod) {
       method = foreignMethod;
+      payload = foreignPayload;
     }
     ajaxHandler();
   };
