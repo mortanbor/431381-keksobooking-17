@@ -53,6 +53,15 @@
     });
   };
 
+  // обработчик на Esc
+  var addEscListener = function(callback) {
+    window.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.data.CLOSE_KEY_CODE) {
+        callback();
+      }
+    });
+  }
+
   window.utils = {
     getRandomInteger: getRandomInteger,
     getRandomElement: getRandomElement,
@@ -61,6 +70,7 @@
     findTypeById: findTypeById,
     templateRender: templateRender,
     setSynchronizeValue: setSynchronizeValue,
-    getNodeNumber: getNodeNumber
+    getNodeNumber: getNodeNumber,
+    addEscListener: addEscListener
   };
 })();

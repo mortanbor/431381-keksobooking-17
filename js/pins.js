@@ -19,7 +19,6 @@
     imgPin.alt = pin.offer.type;
     pinElement.style.left = (pin.location.x - widthPinHalf) + 'px';
     pinElement.style.top = (pin.location.y - heightPinHalf) + 'px';
-
     return pinElement;
   };
 
@@ -46,7 +45,7 @@
     if (evt.target.classList.contains('map__pin')) {
       var pins = similarListElement.querySelectorAll('.map__pin');
       var pinIndex = window.utils.getNodeNumber(pins, evt.target);
-      window.cards.renderCard(window.pins.data[pinIndex]);
+      window.cards.renderCard(window.pins.filteredData[pinIndex]);
     }
   });
 
@@ -56,8 +55,10 @@
 
   window.pins = {
     data: [], // объявляем массив данных, куда записывать данные с сервера
+    filteredData: [], // объявляем массив данных, куда записываем фильрованные данные
     collectFragment: function (pins) {
       collectFragment(pins);
-    }
+    },
+    similarListElement: similarListElement
   };
 })();

@@ -7,6 +7,8 @@
   var offsetMainPinHalf = window.data.MAIN_PIN_WIDTH / -2;
   var minMainPinX = offsetMainPinHalf;
   var maxMainPinX = window.map.width + offsetMainPinHalf;
+  var startTop = mainPin.style.top;
+  var startLeft = mainPin.style.left;
 
   // получаю координаты нижнего конца метки
   var getPinCoords = function (node, width, height) {
@@ -21,8 +23,8 @@
   // callback успешной загрузки данных
   var loadSuccessHandler = function (res) {
     window.pins.data = res;
+    window.pins.filteredData = res;
     window.pins.collectFragment(res);
-    // window.cards.renderCard(res[0]);
   };
 
   // активация всей страницы
@@ -34,6 +36,7 @@
     window.utils.removeElementsDisabled(window.map.filtersNodes);
     window.utils.removeElementsDisabled(window.form.node);
 
+    window.cards.initCard();
     window.data.isActive = true;
   };
 
@@ -48,6 +51,11 @@
     }
     // добавляем значение в инпут адрес координат острого конца главной метки
     window.form.fieldAddress.value = address;
+  };
+
+  var setMainPinToStart = function () {
+    mainPin.style.top = startTop;
+    mainPin.style.left = startLeft;
   };
 
   var mapPinMainHandler = function (evt) {
@@ -97,4 +105,9 @@
 
   // запись в поле адреса первичных координат метки
   setPinCoordsToAddress();
+
+  window.mainPin = {
+    node: mainPin,
+    setToStart: setMainPinToStart
+  };
 })();

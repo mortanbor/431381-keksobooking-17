@@ -5,13 +5,10 @@
   var errorBlock = errorTemplate.cloneNode(true);
   var errorStatusBlock = errorBlock.querySelector('.error__message');
   var errorBlockCloser = errorBlock.querySelector('.error__button');
-  var url = '';
   var successHandler = null;
-  var method = 'GET';
   var xhr = new XMLHttpRequest();
-  var payload = null;
 
-  var ajaxHandler = function () {
+  var ajaxHandler = function (url, method, payload) {
     xhr.open(method, url);
     xhr.send(payload);
   };
@@ -21,13 +18,16 @@
     errorBlock.classList.remove('hidden');
   };
 
+  var errorCloseHandler = function () {
+    errorBlock.classList.add('hidden');
+  };
+
   xhr.responseType = 'json';
   xhr.timeout = 10000; // 10s
 
-  errorBlockCloser.addEventListener('click', function () {
-    errorBlock.classList.add('hidden');
-    ajaxHandler();
-  });
+  errorBlock.addEventListener('click', errorCloseHandler);
+
+  window.utils.addEscListener(errorCloseHandler);
 
   xhr.addEventListener('load', function () {
     if (xhr.status === 200) {
@@ -49,12 +49,7 @@
   document.body.appendChild(errorBlock);
 
   window.ajax = function (foreignUrl, foreignSuccessHandler, foreignMethod, foreignPayload) {
-    url = foreignUrl;
-    successHandler = foreignSuccessHandler;
-    if (foreignMethod) {
-      method = foreignMethod;
-      payload = foreignPayload;
-    }
-    ajaxHandler();
+    successHandler = foreignSuccessHandler || null;
+    ajaxHandler(foreignUrl, foreignMethod || 'GET', foreignPayload || null);
   };
 })();

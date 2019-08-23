@@ -80,20 +80,30 @@
     cardTemplateElement.classList.remove('hidden');
   };
 
-  popupClose.addEventListener('click', function () {
+  var removeCard = function () {
+    popupClose.removeEventListener('click', hideCard);
+    cardTemplateElement.remove();
+  };
+
+  var hideCard = function () {
     cardTemplateElement.classList.add('hidden');
-  });
+  };
 
-  window.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.data.CLOSE_KEY_CODE) {
-      cardTemplateElement.classList.add('hidden');
-    }
-  });
+  var initCard = function () {
+    hideCard();
+    window.map.filtersContainer.insertAdjacentElement('beforebegin', cardTemplateElement);
+  };
 
-  cardTemplateElement.classList.add('hidden');
-  window.map.filtersContainer.insertAdjacentElement('beforebegin', cardTemplateElement);
+  popupClose.addEventListener('click', hideCard);
+
+  window.utils.addEscListener(function () {
+    hideCard();
+  });
 
   window.cards = {
-    renderCard: renderCard
+    renderCard: renderCard,
+    hideCard: hideCard,
+    removeCard: removeCard,
+    initCard: initCard
   };
 })();

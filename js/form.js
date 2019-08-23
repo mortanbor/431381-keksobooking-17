@@ -16,6 +16,9 @@
   var submitButton = adForm.querySelector('.ad-form__submit');
   var resetButton = adForm.querySelector('.ad-form__reset');
 
+  var successPostTemplate = document.querySelector('#success').content.querySelector('.success');
+  var successPostBlock = successPostTemplate.cloneNode(true);
+
   var validities = window.data.VALIDITIES;
   var titleValidity = '';
   var capacityValidity = '';
@@ -54,15 +57,10 @@
     var minPrice = fieldMinPrice.min;
     if (!fieldMinPrice.value.length) {
       priceValidity = validities.required;
-      console.log(1);
     } else if (fieldMinPrice.value < minPrice && fieldMinPrice.value > maxPrice) {
       priceValidity = validities.minPricePrefix + minPrice + ' – ' + maxPrice;
-      console.log(2);
-
     } else {
       priceValidity = '';
-      console.log(3);
-
     }
     fieldMinPrice.setCustomValidity(priceValidity);
   };
@@ -83,16 +81,9 @@
     fieldCapacity.setCustomValidity(capacityValidity);
   };
 
-  var resetHandler = function () {
-    setTimeout(function () {
-      fieldAddress.value = window.data.startAddress;
-    }, 0);
-  };
-
-  var successPostHandler = function (res) {
-    console.log(res); // eslint-disable-line
-    adForm.reset();
-    resetHandler();
+  var successPostHandler = function () {
+    window.addEventListener('keydown', window.deactivate.successCloseHandler);
+    successPostBlock.classList.remove('hidden');
   };
 
   fieldTitle.addEventListener('input', titleInputHandler);
@@ -116,7 +107,13 @@
     }
   });
 
-  resetButton.addEventListener('click', resetHandler);
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    window.deactivate.do();
+  });
+
+  successPostBlock.classList.add('hidden');
+  document.body.appendChild(successPostBlock);
 
   // в поле цены записать мин.цену стартого жилья
   fieldMinPrice.placeholder = getRentPrice(fieldRent.value);
@@ -129,6 +126,8 @@
 
   window.form = {
     node: adForm,
-    fieldAddress: fieldAddress
+    fieldAddress: fieldAddress,
+    resetButton: resetButton,
+    successPostBlock: successPostBlock
   };
 })();
